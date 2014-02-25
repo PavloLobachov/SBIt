@@ -4,31 +4,51 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
 @Entity
-@Table(name="product")
+@Table(name = "products")
 public class Product implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	@Id
-	@Column(name = "idProduct")
-	@GeneratedValue
+	@Column(name = "id_product", nullable = false)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int idProduct;
-	@Column(name = "name")
+
+	@Column(name = "name", nullable = false, length = 45)
 	private String name;
-	@Column(name = "subCategoryId")
-	private int subCategoryId;
-	@Column(name = "userId")
-	private int userId;
+
+	@Column(name = "sub_category_id", nullable = false)
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "id_sub_category")
+	private SubCategory subCategory;
+
+	@Column(name = "user_id", nullable = false)
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "id_user")
+	private User user;
+
 	@Column(name = "delivery")
 	private String delivery;
+
 	@Column(name = "deleted")
 	private boolean deleted;
-	@Column(name = "description")
+
+	@Transient
+	@OneToOne(fetch = FetchType.EAGER, mappedBy = "product")
 	private Description description;
-	@Column(name = "auction")
+
+	@Transient
+	@OneToOne(fetch = FetchType.EAGER, mappedBy = "product")
 	private Auction auction;
 
 	public Product() {
@@ -54,21 +74,21 @@ public class Product implements Serializable {
 		return this;
 	}
 
-	public int getSubCategoryId() {
-		return subCategoryId;
+	public SubCategory getSubCategory() {
+		return subCategory;
 	}
 
-	public Product setSubCategoryId(int subCategoryId) {
-		this.subCategoryId = subCategoryId;
+	public Product setSubCategory(SubCategory subCategory) {
+		this.subCategory = subCategory;
 		return this;
 	}
 
-	public int getUserId() {
-		return userId;
+	public User getUser() {
+		return user;
 	}
 
-	public Product setUserId(int userId) {
-		this.userId = userId;
+	public Product setUser(User user) {
+		this.user = user;
 		return this;
 	}
 
@@ -99,10 +119,12 @@ public class Product implements Serializable {
 		return this;
 	}
 
+	@Override
 	public String toString() {
-		StringBuilder string = new StringBuilder();
-		string.append(idProduct).append(" name: ").append(name);
-		return string.toString();
+		return "Product [idProduct=" + idProduct + ", name=" + name
+				+ ", subCategory=" + subCategory + ", user=" + user
+				+ ", delivery=" + delivery + ", deleted=" + deleted
+				+ ", description=" + description + ", auction=" + auction + "]";
 	}
 
 	public Auction getAuction() {

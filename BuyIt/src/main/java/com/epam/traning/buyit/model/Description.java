@@ -6,33 +6,48 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
 @Entity
-@Table(name="description")
+@Table(name = "descriptions")
 public class Description implements Serializable {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+
 	@Id
-	@Column(name = "productId")
-	@GeneratedValue
-	private int productId;
-	@Column(name = "idDescription")
+	@Column(name = "id_description", nullable = false)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int idDescription;
+
+	@Column(name = "product_id", nullable = false)
+	@OneToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "id_product")
+	private Product product;
+
 	@Column(name = "features")
 	private String features;
-	@Column(name = "descText")
+
+	@Column(name = "desc_text")
 	private String descText;
-	@Column(name = "itemPhotos")
+
+	@Transient
+	@OneToMany(mappedBy = "description", fetch = FetchType.LAZY)
 	private List<Image> itemPhotos;
 
 	public Description() {
 		itemPhotos = new ArrayList<Image>();
 	}
-	
+
 	public int getIdDescription() {
 		return idDescription;
 	}
@@ -77,15 +92,16 @@ public class Description implements Serializable {
 	public Image getItemPhoto(int number) {
 		return itemPhotos.get(number);
 	}
-	
-	public int getProductId() {
-		return productId;
+
+	public Product getProduct() {
+		return product;
 	}
 
-	public void setProductId(int productId) {
-		this.productId = productId;
+	public Description setProduct(Product product) {
+		this.product = product;
+		return this;
 	}
-	
+
 	@Override
 	public String toString() {
 		StringBuilder string = new StringBuilder();

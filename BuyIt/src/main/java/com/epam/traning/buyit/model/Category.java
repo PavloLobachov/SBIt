@@ -6,31 +6,38 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
-@Table(name="category")
-public class Category implements Serializable  {
+@Table(name = "categories")
+public class Category implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	@Id
-	@Column(name = "idCategory")
-	@GeneratedValue
+	@Column(name = "id_category", nullable = false)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int idCategory;
-	@Column(name = "name")
+
+	@Column(name = "name", length = 45)
 	private String name;
-	@Column(name = "listSubCategories")
+
+	@Transient
+	@OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
 	private List<SubCategory> listSubCategories;
 
 	public Category() {
-		listSubCategories = new ArrayList<SubCategory>();
+		this.listSubCategories = new ArrayList<SubCategory>();
 	}
-	
+
 	public int getIdCategory() {
 		return idCategory;
 	}
@@ -53,18 +60,20 @@ public class Category implements Serializable  {
 		return listSubCategories;
 	}
 
-	public void setListSubCategories(List<SubCategory> listSubCategories) {
+	public Category setListSubCategories(List<SubCategory> listSubCategories) {
 		this.listSubCategories = listSubCategories;
+		return this;
 	}
 
 	public SubCategory getSubCutegory(int index) {
 		return getListSubCategories().get(index);
 	}
 
-	public void setSubCategory(SubCategory subCategory) {
+	public Category setSubCategory(SubCategory subCategory) {
 		getListSubCategories().add(subCategory);
+		return this;
 	}
-	
+
 	@Override
 	public String toString() {
 		StringBuilder string = new StringBuilder();

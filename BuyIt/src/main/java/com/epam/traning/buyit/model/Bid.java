@@ -5,12 +5,19 @@ import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
-@Table(name = "bid")
+@Table(name = "bids")
 public class Bid implements Serializable {
 
 	/**
@@ -18,16 +25,25 @@ public class Bid implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	@Id
-	@Column(name = "idBid")
-	@GeneratedValue
+	@Column(name = "id_bid", nullable = false)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int idBid;
-	@Column(name = "auctionId")
-	private int auctionId;
-	@Column(name = "userId")
-	private int userId;
-	@Column(name = "time")
+
+	@Column(name = "auction_id", nullable = false)
+	@OneToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "id_auction")
+	private Auction auctionId;
+
+	@Column(name = "user_id", nullable = false)
+	@OneToMany(fetch = FetchType.EAGER)
+	@JoinColumn(name = "id_user")
+	private User userId;
+
+	@Column(name = "time", nullable = false)
+	@Temporal(TemporalType.TIMESTAMP)
 	private Timestamp time;
-	@Column(name = "amount")
+
+	@Column(name = "amount", nullable = false)
 	private double amount;
 
 	public double getAmount() {
@@ -57,31 +73,28 @@ public class Bid implements Serializable {
 		return this;
 	}
 
-	public int getAuctionId() {
+	public Auction getAuctionId() {
 		return auctionId;
 	}
 
-	public Bid setAuctionId(int auctionId) {
+	public Bid setAuctionId(Auction auctionId) {
 		this.auctionId = auctionId;
 		return this;
 	}
 
-	public int getUserId() {
+	public User getUserId() {
 		return userId;
 	}
 
-	public Bid setUserId(int userId) {
+	public Bid setUserId(User userId) {
 		this.userId = userId;
 		return this;
 	}
 
 	@Override
 	public String toString() {
-		StringBuilder string = new StringBuilder();
-		string.append(idBid).append(" time: ").append(time)
-				.append(" auction id: ").append(auctionId).append(" amount: ")
-				.append(amount).append(" user id: ").append(userId);
-		return string.toString();
+		return "Bid [idBid=" + idBid + ", auctionId=" + auctionId + ", userId="
+				+ userId + ", time=" + time + ", amount=" + amount + "]";
 	}
 
 }

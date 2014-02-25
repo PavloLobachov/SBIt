@@ -4,13 +4,20 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
 @Entity
-@Table(name="subCategory")
+@Table(name = "sub_categories")
 public class SubCategory implements Serializable {
 
 	/**
@@ -18,14 +25,20 @@ public class SubCategory implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	@Id
-	@Column(name = "idSubCategory")
+	@Column(name = "id_sub_category")
 	@GeneratedValue
 	private int idSubCategory;
+	
 	@Column(name = "name")
 	private String name;
-	@Column(name = "categoryId")
-	private int categoryId;
-	@Column(name = "products")
+	
+	@Column(name = "category_id")
+	@JoinColumn(name = "id_category")
+	@ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+	private Category category;
+	
+	@Transient
+	@OneToMany(mappedBy = "subCategory", fetch = FetchType.LAZY)
 	private List<Product> products;
 
 	public SubCategory() {
@@ -50,12 +63,12 @@ public class SubCategory implements Serializable {
 		return this;
 	}
 
-	public int getCategoryId() {
-		return categoryId;
+	public Category getCategory() {
+		return category;
 	}
 
-	public SubCategory setCategoryId(int categoryId) {
-		this.categoryId = categoryId;
+	public SubCategory setCategory(Category category) {
+		this.category = category;
 		return this;
 	}
 

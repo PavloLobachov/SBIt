@@ -5,7 +5,10 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -17,29 +20,39 @@ public class Address implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	@Id
-	@Column(name = "contactId")
-	@GeneratedValue
-	private int contactId;
-	@Column(name = "region")
+	@Column(name = "id_address", nullable = false)
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private int id_address;
+
+	@Column(name = "contacts_id", nullable = false)
+	@OneToOne
+	@JoinColumn(name = "id_contact")
+	private Contact contactId;
+
+	@Column(name = "region", length = 45)
 	private String region;
-	@Column(name = "city")
+
+	@Column(name = "city", length = 45)
 	private String city;
-	@Column(name = "street")
+
+	@Column(name = "street", length = 45)
 	private String street;
-	@Column(name = "house")
+
+	@Column(name = "house", length = 45)
 	private String house;
-	@Column(name = "flat")
+
+	@Column(name = "flat", length = 45)
 	private String flat;
-	@Column(name = "zipCode")
+
+	@Column(name = "zip_code", length = 45)
 	private String zipCode;
 
-	public int getContactId() {
-		return contactId;
+	public int getId_address() {
+		return id_address;
 	}
 
-	public Address setContactId(int contactId) {
-		this.contactId = contactId;
-		return this;
+	public void setId_address(int id_address) {
+		this.id_address = id_address;
 	}
 
 	public String getRegion() {
@@ -96,13 +109,21 @@ public class Address implements Serializable {
 		return this;
 	}
 
+	public Contact getContactId() {
+		return contactId;
+	}
+
+	public Address setContactId(Contact contactId) {
+		this.contactId = contactId;
+		return this;
+	}
+
 	@Override
 	public String toString() {
-		StringBuilder string = new StringBuilder();
-		string.append(contactId).append(" region: ").append(region)
-				.append(" city: ").append(city).append(" street: ")
-				.append(street).append(" house: ").append(house)
-				.append(" zip code: ").append(zipCode);
-		return string.toString();
+		return "Address [id_address=" + id_address + ", contactId=" + contactId
+				+ ", region=" + region + ", city=" + city + ", street="
+				+ street + ", house=" + house + ", flat=" + flat + ", zipCode="
+				+ zipCode + "]";
 	}
+
 }

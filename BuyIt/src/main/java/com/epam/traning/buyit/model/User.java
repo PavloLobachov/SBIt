@@ -3,39 +3,57 @@ package com.epam.traning.buyit.model;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
 @Entity
-@Table(name="user")
-public class User implements Serializable{
+@Table(name = "users")
+public class User implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	@Id
-	@Column(name = "idUser")
-	@GeneratedValue
+	@Column(name = "id_user", nullable = false)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int idUser;
-	@Column(name = "role")
+
+	@Column(name = "role", nullable = false)
 	private boolean role;
-	@Column(name = "firstName")
+
+	@Column(name = "first_name", length = 45, nullable = false)
 	private String firstName;
-	@Column(name = "lastName")
+
+	@Column(name = "last_name", length = 45, nullable = false)
 	private String lastName;
-	@Column(name = "login")
+
+	@Column(name = "login", length = 45, nullable = false)
 	private String login;
-	@Column(name = "password")
+
+	@Column(name = "password", length = 45, nullable = false)
 	private String password;
-	@Column(name = "contact")
-	private Contact contact;
-	@Column(name = "avatar")
+
+	@Column(name = "avatar", length = 45, nullable = false)
 	private String avatar;
+
 	@Column(name = "ban")
 	private Status ban;
-	@Column(name = "productList")
+
+	@Transient
+	private Contact contact;
+
+	@Transient
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.REMOVE)
 	private List<Product> productList;
-	@Column(name = "bidList")
+
+	@Transient
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
 	private List<Bid> bidList;
 
 	public User() {
@@ -140,7 +158,7 @@ public class User implements Serializable{
 		this.bidList = bidList;
 		return this;
 	}
-	
+
 	@Override
 	public String toString() {
 		StringBuilder string = new StringBuilder();

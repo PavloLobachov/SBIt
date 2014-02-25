@@ -1,18 +1,9 @@
 package com.epam.traning.buyit.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-
-@Entity
-@Table(name="status")
 public enum Status {
-	BANNED("banned", true),
-	UNBANNED("unbanned", false);
+	BANNED("banned", true), UNBANNED("unbanned", false);
 
-	@Column(name = "type")
 	private boolean type;
-	@Column(name = "status")
 	private String status;
 
 	Status(String status, boolean type) {

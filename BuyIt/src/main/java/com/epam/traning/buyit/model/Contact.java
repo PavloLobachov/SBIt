@@ -4,36 +4,43 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
-@Table(name="contact")
+@Table(name = "contacts")
 public class Contact implements Serializable {
-
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	@Id
-	@Column(name = "idContact")
-	@GeneratedValue
+	@Column(name = "id_contact", nullable = false)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int idContact;
-	@Column(name = "userId")
-	private int userId; 
-	@Column(name = "email")
+
+	@OneToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "id_user", nullable = false)
+	@Column(name = "user_id")
+	private User user;
+
+	@Column(name = "email", nullable = false, length = 45)
 	private String email;
-	@Column(name = "phone")
+
+	@Column(name = "phone", length = 45)
 	private String phone;
-	@Column(name = "address")
+
+	@Transient
+	@OneToOne(mappedBy = "address", fetch = FetchType.EAGER)
 	private Address address;
 
-	public Contact() {
-		address = new Address();
-	}
-	
 	public int getIdContact() {
 		return idContact;
 	}
@@ -73,16 +80,17 @@ public class Contact implements Serializable {
 	@Override
 	public String toString() {
 		StringBuilder string = new StringBuilder();
-		string.append(userId).append(" email: ").append(email)
+		string.append(user).append(" email: ").append(email)
 				.append(" phone: ").append(phone);
 		return string.toString();
 	}
 
-	public int getUserId() {
-		return userId;
+	public User getUser() {
+		return user;
 	}
 
-	public void setUserId(int userId) {
-		this.userId = userId;
+	public void setUserId(User user) {
+		this.user = user;
 	}
+
 }

@@ -3,14 +3,20 @@ package com.epam.traning.buyit.model;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
-@Table(name="auction")
+@Table(name = "auctions")
 public class Auction implements Serializable {
 
 	/**
@@ -18,24 +24,36 @@ public class Auction implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	@Id
-	@Column(name = "idAuction")
-	@GeneratedValue
+	@Column(name = "id_auction", nullable = false)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int idAuction;
-	@Column(name = "productId")
-	private int productId;
-	@Column(name = "startPrice")
+
+	@Column(name = "product_id", nullable = false)
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "id_product")
+	private Product product;
+
+	@Column(name = "start_price", nullable = false)
 	private double startPrice;
-	@Column(name = "buyItNow")
+
+	@Column(name = "buy_it_now")
 	private double buyItNow;
+
 	@Column(name = "count")
 	private int count;
-	@Column(name = "currentPrice")
+
+	@Column(name = "current_price", nullable = false)
 	private double currentPrice;
-	@Column(name = "status")
+
+	@Column(name = "status", length = 45)
 	private String status;
-	@Column(name = "startTime")
+
+	@Column(name = "start_time", nullable = false)
+	@Temporal(TemporalType.TIMESTAMP)
 	private Timestamp startTime;
-	@Column(name = "endTime")
+
+	@Column(name = "end_time", nullable = false)
+	@Temporal(TemporalType.TIMESTAMP)
 	private Timestamp endTime;
 
 	public int getIdAuction() {
@@ -110,25 +128,22 @@ public class Auction implements Serializable {
 		return this;
 	}
 
-	public int getProductId() {
-		return productId;
+	public Product getProduct() {
+		return product;
 	}
 
-	public Auction setProductId(int productId) {
-		this.productId = productId;
+	public Auction setProductId(Product product) {
+		this.product = product;
 		return this;
 	}
 
 	@Override
 	public String toString() {
-		StringBuilder string = new StringBuilder();
-		string.append(idAuction).append(" start price: ").append(startPrice)
-				.append(" start time: ").append(startTime)
-				.append(" end time: ").append(endTime).append(" status: ")
-				.append(status).append(" buy now: ").append(buyItNow)
-				.append(" count: ").append(count).append(" curr. price: ")
-				.append(currentPrice);
-		return string.toString();
+		return "Auction [idAuction=" + idAuction + ", product=" + product
+				+ ", startPrice=" + startPrice + ", buyItNow=" + buyItNow
+				+ ", count=" + count + ", currentPrice=" + currentPrice
+				+ ", status=" + status + ", startTime=" + startTime
+				+ ", endTime=" + endTime + "]";
 	}
 
 }
