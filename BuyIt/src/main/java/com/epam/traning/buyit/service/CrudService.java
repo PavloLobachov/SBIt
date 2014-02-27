@@ -1,7 +1,7 @@
-package com.epam.traning.buyit.dao;
+package com.epam.traning.buyit.service;
 
-public interface GenericDAO<T> {
-
+public interface CrudService<T> {
+	
 	void createElement(T elem);
 
 	T getElementById(int id);
