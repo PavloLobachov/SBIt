@@ -13,7 +13,7 @@ public class App {
 		System.out.println("load context");
 		ConfigurableApplicationContext context = new ClassPathXmlApplicationContext("application-config.xml");
 		User em = new User();
-		em.setIdUser(1111);
+//		em.setIdUser(1111);
 		em.setFirstName("Paul");
 		em.setLastName("German");
 		em.setLogin("paul");
@@ -22,10 +22,10 @@ public class App {
 		
 		CrudService<User> service = (CrudService<User>) context.getBean("userService");
 		service.createElement(em);
-		System.out.println("Updated age :" + service.getElementById(1111).getFirstName());		
+		System.out.println("Updated age :" + service.getElementById(em.getIdUser()).getFirstName());		
 		em.setFirstName("John");
 		service.updateElement(em);
-		System.out.println("Updated age :" + service.getElementById(1111).getFirstName());
+		System.out.println("Updated age :" + service.getElementById(em.getIdUser()).getFirstName());
 		service.deleteElement(em);
 		context.close();
 	}

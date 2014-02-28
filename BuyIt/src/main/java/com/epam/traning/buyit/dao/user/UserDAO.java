@@ -16,6 +16,7 @@ public class UserDAO implements UserDAOInterface {
 
 	@Override
 	public void createElement(User elem) {
+		System.out.println("public void createElement(User elem)");
 		sessionFactory.getCurrentSession().persist(elem);
 	}
 
