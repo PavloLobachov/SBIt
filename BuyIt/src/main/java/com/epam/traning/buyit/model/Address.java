@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -24,10 +25,9 @@ public class Address implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id_address;
 
-	@Column(name = "contacts_id", nullable = false)
-	@OneToOne
-	@JoinColumn(name = "id_contact")
-	private Contact contactId;
+	@OneToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "contacts_id")
+	private Contact contact;
 
 	@Column(name = "region", length = 45)
 	private String region;
@@ -109,18 +109,18 @@ public class Address implements Serializable {
 		return this;
 	}
 
-	public Contact getContactId() {
-		return contactId;
+	public Contact getContact() {
+		return contact;
 	}
 
-	public Address setContactId(Contact contactId) {
-		this.contactId = contactId;
+	public Address setContact(Contact contact) {
+		this.contact = contact;
 		return this;
 	}
 
 	@Override
 	public String toString() {
-		return "Address [id_address=" + id_address + ", contactId=" + contactId
+		return "Address [id_address=" + id_address + ", contactId=" + contact
 				+ ", region=" + region + ", city=" + city + ", street="
 				+ street + ", house=" + house + ", flat=" + flat + ", zipCode="
 				+ zipCode + "]";

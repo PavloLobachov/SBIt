@@ -1,4 +1,4 @@
-package com.epam.traning.buyit.dao.user;
+package com.epam.traning.buyit.dao.address;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,16 +8,16 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.epam.traning.buyit.model.User;
+import com.epam.traning.buyit.model.Address;
 
-@Repository("userDAO")
-public class UserDAO implements UserDAOInterface {
+@Repository("addressDAO")
+public class AddressDAO implements AddressDAOInterface {
 
 	@Autowired
-	private SessionFactory sessionFactory;
+	SessionFactory sessionFactory;
 
 	@Override
-	public void createElement(User elem) {
+	public void createElement(Address elem) {
 //		sessionFactory.getCurrentSession().save(elem);
 		Session session = null;
 		try {
@@ -34,12 +34,14 @@ public class UserDAO implements UserDAOInterface {
 	}
 
 	@Override
-	public User getElementById(int id) {
+	public Address getElementById(int id) {
+//		return (Address) sessionFactory.getCurrentSession().load(Address.class,
+//				id);
 		Session session = null;
-		User user = null;
+		Address address = null;
 		try {
 			session = sessionFactory.openSession();
-			user = (User) session.get(User.class, id);
+			address = (Address) session.get(Address.class, id);
 		} catch (Exception e) {
 			System.out.println("I/O Exeption");
 			System.err.println(e.getMessage());
@@ -48,11 +50,12 @@ public class UserDAO implements UserDAOInterface {
 				session.close();
 			}
 		}
-		return user;
+		return address;
 	}
 
 	@Override
-	public void updateElement(User elem) {
+	public void updateElement(Address elem) {
+//		sessionFactory.getCurrentSession().update(elem);
 		Session session = null;
 		try {
 			session = sessionFactory.openSession();
@@ -65,33 +68,22 @@ public class UserDAO implements UserDAOInterface {
 				session.close();
 			}
 		}
-
 	}
 
 	@Override
-	public void deleteElement(User elem) {
-		Session session = null;
-		try {
-			session = sessionFactory.openSession();
-			session.delete(elem);
-		} catch (Exception e) {
-			System.out.println("I/O Exeption");
-			System.err.println(e.getMessage());
-		} finally {
-			if (session != null && session.isOpen()) {
-				session.close();
-			}
-		}
+	public void deleteElement(Address elem) {
+		throw new UnsupportedOperationException();
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<User> getAllUsers() {
+	public List<Address> getAllAddress() {
 		Session session = null;
-		List<User> users = new ArrayList<User>();
+		List<Address> address = new ArrayList<Address>();
+
 		try {
 			session = sessionFactory.openSession();
-			users = session.createCriteria(User.class).list();
+			address = session.createCriteria(Address.class).list();
 		} catch (Exception e) {
 			System.out.println("I/O Exeption");
 			System.err.println(e.getMessage());
@@ -100,27 +92,8 @@ public class UserDAO implements UserDAOInterface {
 				session.close();
 			}
 		}
-		return users;
-	}
 
-	@Override
-	public boolean checkLogin(String login) {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public User getUser(String login, String password) {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public User getUserByLogin(String login) {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public boolean changePasswordByUserId(int id, String newPassword) {
-		throw new UnsupportedOperationException();
+		return address;
 	}
 
 }

@@ -1,5 +1,6 @@
 package com.epam.traning.buyit.service;
 
+
 public interface CrudService<T> {
 	
 	void createElement(T elem);
@@ -9,5 +10,5 @@ public interface CrudService<T> {
 	void updateElement(T elem);
 
 	void deleteElement(T elem);
-
+	
 }

@@ -27,8 +27,7 @@ public class Contact implements Serializable {
 	private int idContact;
 
 	@OneToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "id_user", nullable = false)
-	@Column(name = "user_id")
+	@JoinColumn(name = "users_id")
 	private User user;
 
 	@Column(name = "email", nullable = false, length = 45)
@@ -89,7 +88,7 @@ public class Contact implements Serializable {
 		return user;
 	}
 
-	public void setUserId(User user) {
+	public void setUser(User user) {
 		this.user = user;
 	}
 
